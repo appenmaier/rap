@@ -1,0 +1,115 @@
+@Metadata.layer: #CUSTOMER
+@UI.headerInfo:
+{
+  typeNamePlural: 'Travels',
+  typeName: 'Travel',
+  title.value: 'TravelId',
+  description.value: 'Description'
+}
+annotate view ZC_00_Travel with
+{
+
+  /* Facets */
+  @UI.facet:
+  [
+    { position: 10, type: #IDENTIFICATION_REFERENCE, label: 'Travel Details' },
+    { position: 20, type: #LINEITEM_REFERENCE, label: 'Bookings', targetElement: '_Bookings' }
+  ]
+
+  /* Actions */
+  @UI:
+  {
+    lineItem:
+    [
+      { position: 1 },
+      { position: 10, type: #FOR_ACTION, label: 'Cancel Travel', dataAction: 'cancel_travel'}
+    ],
+    identification: [{ position: 1 }]
+  }
+  TravelUuid;
+
+  /* Fields */
+  @UI:
+  {
+    lineItem: [{ position: 10 }],
+    identification: [{ position: 10 }]
+  }
+  TravelId;
+
+  @UI:
+  {
+    lineItem: [{ position: 20 }],
+    selectionField: [{ position: 10 }],
+    identification: [{ position: 20 }]
+  }
+  AgencyId;
+
+  @UI:
+  {
+    lineItem: [{ position: 30 }],
+    selectionField: [{ position: 20 }],
+    identification: [{ position: 30 }]
+  }
+  CustomerId;
+
+  @UI:
+  {
+    lineItem: [{ position: 40 }],
+    identification: [{ position: 40 }]
+  }
+  BeginDate;
+
+  @UI:
+  {
+    lineItem: [{ position: 50 }],
+    identification: [{ position: 10 }]
+  }
+  EndDate;
+
+  @UI:
+  {
+    identification: [{ position: 50 }]
+  }
+  BookingFee;
+
+  @UI:
+  {
+    lineItem: [{ position: 60 }],
+    identification: [{ position: 60 }]
+  }
+  TotalPrice;
+
+  @UI:
+  {
+    identification: [{ position: 70 }]
+  }
+  CurrencyCode;
+
+  @UI:
+  {
+    lineItem: [{ position: 70 }],
+    identification: [{ position: 80 }]
+  }
+  Description;
+
+  @UI:
+  {
+    lineItem: [{ position: 80 }],
+    selectionField: [{ position: 30 }],
+    identification: [{ position: 90 }]
+  }
+  Status;
+
+  @UI.identification: [{ position: 100 }]
+  CreatedBy;
+
+  @UI.hidden: true
+  CreatedAt;
+
+  @UI.identification: [{ position: 110 }]
+  LastChangedBy;
+
+  @UI.hidden: true
+  LastChangedAt;
+
+}

@@ -1,0 +1,108 @@
+managed implementation in class zbp_00_travel unique;
+with draft;
+
+/* Root Entity: Travel */
+define behavior for ZI_00_Travel alias Travel
+persistent table z00_travel
+draft table z00_travel_d
+lock master
+total etag LastChangedAt
+authorization master ( instance )
+etag master LastChangedAt
+{
+  /* Associations */
+  association _Bookings
+  { create; with draft; }
+
+    /* Draft Actions */
+    draft action Edit;
+    draft action Activate;
+    draft action Resume;
+    draft action Discard;
+
+    /* CRUD-Methods */
+    create;
+    update;
+    delete;
+
+    /* Actions */
+    action cancel_travel;
+
+    /* Validations */
+    validation validate_agency_id on save
+    { create; update; field AgencyId; }
+
+      /* Determinations */
+      determination determine_travel_id on modify
+      { create; }
+
+        /* Field Controls */
+        field ( readonly, numbering : managed ) TravelUuid;
+        field ( readonly : update ) TravelId;
+        field ( readonly ) CreatedAt, CreatedBy;
+        field ( features : instance ) LastChangedAt, LastChangedBy;
+        field ( mandatory ) AgencyId, CustomerId, BeginDate, EndDate;
+
+        /* Mapping */
+        mapping for Z00_TRAVEL corresponding
+        {
+          AgencyId = agency_id;
+          BeginDate = begin_date;
+          BookingFee = booking_fee;
+          CreatedAt = created_at;
+          CreatedBy = created_by;
+          CurrencyCode = currency_code;
+          CustomerId = customer_id;
+          Description = description;
+          EndDate = end_date;
+          LastChangedAt = last_changed_at;
+          LastChangedBy = last_changed_by;
+          Status = status;
+          TotalPrice = total_price;
+          TravelId = travel_id;
+          TravelUuid = travel_uuid;
+        }
+      }
+
+      /* Child Entity: Booking */
+      define behavior for ZI_00_Booking alias Booking
+      lock dependent by _Travel
+      persistent table z00_booking
+      draft table z00_booking_d
+      authorization dependent by _Travel
+      etag dependent by _Travel
+      {
+        /* Association */
+        association _Travel
+        { with draft; }
+
+          /* CRUD-Methods */
+          update;
+          delete;
+
+          /* Determinations */
+          determination determine_customer_id on save
+          { create; }
+
+            /* Field Controls */
+            field ( readonly, numbering : managed ) BookingUuid;
+            field ( readonly ) TravelUuid;
+
+            /* Mapping */
+            mapping for z00_booking corresponding
+            {
+              BookingDate = booking_date;
+              BookingId = booking_id;
+              BookingUuid = booking_uuid;
+              CarrierId = carrier_id;
+              ConnectionId = connection_id;
+              CreatedBy = created_by;
+              CurrencyCode = currency_code;
+              CustomerId = customer_id;
+              FlightDate = flight_date;
+              FlightPrice = flight_price;
+              LastChangedBy = last_changed_by;
+              LocalLastChangedAt = local_last_changed_at;
+              TravelUuid = travel_uuid;
+            }
+          }
